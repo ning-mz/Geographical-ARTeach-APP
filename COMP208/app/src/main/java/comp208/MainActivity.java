@@ -21,12 +21,12 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import android.support.design.widget.FloatingActionButton;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private AnimatorSet changeButtonAnimation;
     private ConstraintLayout layout;
 
+    private Model waterModel;
+
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
     // CompletableFuture requires api level 24
@@ -66,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ux);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
-        CompletableFuture<ViewRenderable> solarControlsStage =
-                ViewRenderable.builder().setView(this, R.layout.solar_controls).build();
+        //CompletableFuture<ViewRenderable> solarControlsStage =
+        //        ViewRenderable.builder().setView(this, R.layout.solar_controls).build();
 
 
 
@@ -147,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setChangeButton (View none){
+        waterModel.showInfo();
+        /*
         if (setFlag == false)
             return;
         flag = flag +1;
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
             model.setRenderable(testRenderable);
             model.select();
         }
+        */
     }
 
     private void setDeleteButton (View none){
@@ -186,10 +191,18 @@ public class MainActivity extends AppCompatActivity {
         anchor = hitResult.createAnchor();
         anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(arFragment.getArSceneView().getScene());
+
+        waterModel = new Model("Water Model", this,andyRenderable, arFragment, anchorNode);
+        waterModel.setParent(arFragment.getArSceneView().getScene());
+        waterModel.setLocalPosition(new Vector3(0.0f, 0.0f, 0.0f));
+
+        /*
         model = new TransformableNode(arFragment.getTransformationSystem());
         model.setParent(anchorNode);
         model.setRenderable(andyRenderable);
         model.select();
+        setFlag = true;
+        */
         setFlag = true;
     }
 

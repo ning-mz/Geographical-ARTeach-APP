@@ -15,7 +15,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 
 public class Model extends Node implements Node.OnTapListener {
-    private static final float INFO_CARD_Y_POS_COEFF = 0.55f;
+    private static final float INFO_CARD_Y_POS_COEFF = 2f;
 
     private final String modelName;
     private final Context context;
@@ -48,9 +48,9 @@ public class Model extends Node implements Node.OnTapListener {
 
         if (infoCard == null) {
             infoCard = new Node();
-            infoCard.setParent(this);
-            infoCard.setEnabled(false);
-            infoCard.setLocalPosition(new Vector3(0.0f, 1.0f * INFO_CARD_Y_POS_COEFF, 0.0f));
+            infoCard.setParent(anchorNode);
+            infoCard.setEnabled(true);
+            infoCard.setLocalPosition(new Vector3(0.0f, 1.0f, 0.0f));
 
             ViewRenderable.builder()
                     .setView(context, R.layout.model_card_view)
@@ -66,13 +66,10 @@ public class Model extends Node implements Node.OnTapListener {
                                 throw new AssertionError("Could not load plane card view.", throwable);
                             });
         }
-
-        if (true){
-            modelNode = new TransformableNode(arFragment.getTransformationSystem());
-            modelNode.setParent(anchorNode);
-            modelNode.setRenderable(modelRenderable);
-            modelNode.select();
-        }
+        modelNode = new TransformableNode(arFragment.getTransformationSystem());
+        modelNode.setParent(anchorNode);
+        modelNode.setRenderable(modelRenderable);
+        modelNode.select();
     }
 
     @Override
@@ -80,7 +77,6 @@ public class Model extends Node implements Node.OnTapListener {
         if (infoCard == null) {
             return;
         }
-
         // Typically, getScene() will never return null because onUpdate() is only called when the node
         // is in the scene.
         // However, if onUpdate is called explicitly or if the node is removed from the scene on a
@@ -99,5 +95,12 @@ public class Model extends Node implements Node.OnTapListener {
     public void onTap(HitTestResult hitTestResult, MotionEvent motionEvent) {
         if (infoCard == null)
             return;
+        infoCard.setEnabled(!infoCard.isEnabled());
+    }
+
+    public void showInfo(){
+        if (infoCard == null)
+            return;
+        infoCard.setEnabled(!infoCard.isEnabled());
     }
 }
