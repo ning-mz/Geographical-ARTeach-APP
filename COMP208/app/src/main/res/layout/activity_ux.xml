@@ -47,22 +47,34 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="15dp"
         android:clickable="true"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toTopOf="@+id/changeButton"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/infoButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_delete" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/changeButton"
+        android:id="@+id/infoButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="85dp"
         android:clickable="true"
-        app:backgroundTint="@android:color/holo_green_light"
+        app:backgroundTint="@android:color/holo_orange_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/chooseButton"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_view"
+        app:backgroundTint="@android:color/holo_green_light"
+        app:layout_constraintBottom_toTopOf="@+id/deleteButton"
+        app:layout_constraintEnd_toEndOf="parent" />
   </android.support.constraint.ConstraintLayout>
 
   <android.support.design.widget.FloatingActionButton
@@ -72,6 +84,7 @@
       android:layout_marginEnd="12dp"
       android:layout_marginBottom="15dp"
       android:clickable="true"
+      app:backgroundTint="@android:color/holo_blue_bright"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:srcCompat="@android:drawable/ic_menu_sort_by_size" />

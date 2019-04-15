@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +26,6 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import android.support.design.widget.FloatingActionButton;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private static final double MIN_OPENGL_VERSION = 3.0;
 
     private ArFragment arFragment;
-    private ModelRenderable andyRenderable;
+    private ModelRenderable waterRenderable;
     private ModelRenderable testRenderable;
-    private TransformableNode model;
-    private FloatingActionButton changeButton;
+    private FloatingActionButton infoButton;
     private FloatingActionButton deleteButton;
     private FloatingActionButton menuButton;
+    private FloatingActionButton chooseButton;
     private AnchorNode anchorNode;
     private Anchor anchor;
     private int flag = 0;
@@ -51,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private AnimatorSet deleteButtonAnimation;
     private AnimatorSet changeButtonAnimation;
     private ConstraintLayout layout;
-
-    private Model waterModel;
+    private Model Model;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -71,14 +67,10 @@ public class MainActivity extends AppCompatActivity {
         //CompletableFuture<ViewRenderable> solarControlsStage =
         //        ViewRenderable.builder().setView(this, R.layout.solar_controls).build();
 
-
-
-        // When you build a Renderable, Sceneform loads its resources in the background while returning
-        // a CompletableFuture. Call thenAccept(), handle(), or check isDone() before calling get().
         ModelRenderable.builder()
-                .setSource(this, R.raw.fixed1)
+                .setSource(this, R.raw.untitled)
                 .build()
-                .thenAccept(renderable -> andyRenderable = renderable)
+                .thenAccept(renderable -> waterRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast =
@@ -101,17 +93,14 @@ public class MainActivity extends AppCompatActivity {
                             return null;
                         });
 
-
-
         layout = (ConstraintLayout)findViewById(R.id.ConstraintLayout);
         layout.setVisibility(View.GONE);
 
-
         arFragment.setOnTapArPlaneListener(this::onPlanedTap);
 
-        changeButton = findViewById(R.id.changeButton);
-        changeButton.setEnabled(true);
-        changeButton.setOnClickListener(this::setChangeButton);
+        infoButton = findViewById(R.id.infoButton);
+        infoButton.setEnabled(true);
+        infoButton.setOnClickListener(this::setInfoButton);
 
         deleteButton = findViewById(R.id.deleteButton);
         deleteButton.setEnabled(true);
@@ -121,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
         menuButton.setEnabled(true);
         menuButton.setOnClickListener(this::setMenuButton);
 
+        chooseButton = findViewById(R.id.chooseButton);
+        chooseButton.setEnabled(true);
+        chooseButton.setOnClickListener(this::setChooseButton);
 
         setButtonAnimation();
     }
@@ -129,16 +121,10 @@ public class MainActivity extends AppCompatActivity {
         switch ( (v.getId())){
             case R.id.deleteButton:
                 if (isOnclickMenu){
-
-
                 }
                 break;
-
-            case R.id.changeButton:
-
+            case R.id.infoButton:
                 break;
-
-
         }
     }
 
@@ -146,28 +132,27 @@ public class MainActivity extends AppCompatActivity {
         changeButtonAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.animation);
     }
 
+    private void setInfoButton (View none){
+        Model.showInfo();
+    }
 
-
-    private void setChangeButton (View none){
-        waterModel.showInfo();
-        /*
+    private void setChooseButton(View none){
         if (setFlag == false)
             return;
         flag = flag +1;
         if ((flag%2)==0){
-            model.setRenderable(andyRenderable);
-            model.select();
+            Model.changeRenderable(waterRenderable, "Water Model");
         }else{
-            model.setRenderable(testRenderable);
-            model.select();
+            Model.changeRenderable(testRenderable, "Test Model");
         }
-        */
     }
 
     private void setDeleteButton (View none){
         if (setFlag == false)
             return;
-        arFragment.getArSceneView().getScene().removeChild(arFragment.getArSceneView().getScene().getChildren().get(2));
+        while (arFragment.getArSceneView().getScene().getChildren().size()>2) {
+            arFragment.getArSceneView().getScene().removeChild(arFragment.getArSceneView().getScene().getChildren().get(2));
+        }
         setFlag = false;
     }
 
@@ -179,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             layout.setVisibility(View.VISIBLE);
             changeButtonAnimation.setTarget(layout);
-            //changeButtonAnimation.setStartDelay(200);
             changeButtonAnimation.start();
             menuFlag = true;
         }
@@ -192,18 +176,14 @@ public class MainActivity extends AppCompatActivity {
         anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-        waterModel = new Model("Water Model", this,andyRenderable, arFragment, anchorNode);
-        waterModel.setParent(arFragment.getArSceneView().getScene());
-        waterModel.setLocalPosition(new Vector3(0.0f, 0.0f, 0.0f));
+        deployModel("Water Model", waterRenderable, anchorNode);
+        setFlag = true;
+    }
 
-        /*
-        model = new TransformableNode(arFragment.getTransformationSystem());
-        model.setParent(anchorNode);
-        model.setRenderable(andyRenderable);
-        model.select();
-        setFlag = true;
-        */
-        setFlag = true;
+    public void deployModel(String modelName, ModelRenderable modelRenderable, AnchorNode anchorNode){
+        Model = new Model(modelName, this, modelRenderable, arFragment, anchorNode);
+        Model.setParent(arFragment.getArSceneView().getScene());
+        Model.setLocalPosition(new Vector3(0.0f, 0.0f, 0.0f));
     }
 
     /**

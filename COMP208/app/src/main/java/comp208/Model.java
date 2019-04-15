@@ -15,12 +15,11 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 
 public class Model extends Node implements Node.OnTapListener {
-    private static final float INFO_CARD_Y_POS_COEFF = 2f;
 
     private final String modelName;
     private final Context context;
     private Node infoCard;
-    private final ModelRenderable modelRenderable;
+    private ModelRenderable modelRenderable;
     private TransformableNode modelNode;
     private final ArFragment arFragment;
     private final AnchorNode anchorNode;
@@ -41,10 +40,14 @@ public class Model extends Node implements Node.OnTapListener {
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
     public void onActivate() {
-
         if (getScene() == null) {
             throw new IllegalStateException("Scene is null!");
         }
+
+        modelNode = new TransformableNode(arFragment.getTransformationSystem());
+        modelNode.setParent(anchorNode);
+        modelNode.setRenderable(modelRenderable);
+        modelNode.select();
 
         if (infoCard == null) {
             infoCard = new Node();
@@ -66,24 +69,41 @@ public class Model extends Node implements Node.OnTapListener {
                                 throw new AssertionError("Could not load plane card view.", throwable);
                             });
         }
-        modelNode = new TransformableNode(arFragment.getTransformationSystem());
-        modelNode.setParent(anchorNode);
+    }
+
+    public void changeRenderable(ModelRenderable newModelRenderable, String modelName){
+        anchorNode.removeChild(infoCard);
+        infoCard = new Node();
+        infoCard.setParent(anchorNode);
+        infoCard.setEnabled(true);
+        infoCard.setLocalPosition(new Vector3(0.0f, 1.0f, 0.0f));
+        ViewRenderable.builder()
+                .setView(context, R.layout.model_card_view)
+                .build()
+                .thenAccept(
+                        (renderable) -> {
+                            infoCard.setRenderable(renderable);
+                            TextView textView = (TextView) renderable.getView();
+                            textView.setText(modelName);
+                        })
+                .exceptionally(
+                        (throwable) -> {
+                            throw new AssertionError("Could not load plane card view.", throwable);
+                        });
+
+        this.modelRenderable = newModelRenderable;
         modelNode.setRenderable(modelRenderable);
         modelNode.select();
     }
 
     @Override
     public void onUpdate(FrameTime frameTime) {
-        if (infoCard == null) {
+        if (infoCard == null)
             return;
-        }
-        // Typically, getScene() will never return null because onUpdate() is only called when the node
-        // is in the scene.
-        // However, if onUpdate is called explicitly or if the node is removed from the scene on a
-        // different thread during onUpdate, then getScene may be null.
-        if (getScene() == null) {
+
+        if (getScene() == null)
             return;
-        }
+
         Vector3 cameraPosition = getScene().getCamera().getWorldPosition();
         Vector3 cardPosition = infoCard.getWorldPosition();
         Vector3 direction = Vector3.subtract(cameraPosition, cardPosition);
