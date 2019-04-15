@@ -8,7 +8,7 @@
         <objectAnimator
             android:propertyName="translationY"
             android:valueFrom="100.00"
-            android:valueTo="-50.00"
+            android:valueTo="-20.00"
             android:duration="100"
             android:startOffset="0"
             android:repeatCount="0"

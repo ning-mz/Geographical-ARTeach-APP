@@ -22,9 +22,13 @@ import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import android.support.design.widget.FloatingActionButton;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -61,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ux);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
+
+        CompletableFuture<ViewRenderable> solarControlsStage =
+                ViewRenderable.builder().setView(this, R.layout.solar_controls).build();
+
+
 
         // When you build a Renderable, Sceneform loads its resources in the background while returning
         // a CompletableFuture. Call thenAccept(), handle(), or check isDone() before calling get().
@@ -109,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         menuButton = findViewById(R.id.menuButton);
         menuButton.setEnabled(true);
         menuButton.setOnClickListener(this::setMenuButton);
+
 
         setButtonAnimation();
     }
@@ -164,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             layout.setVisibility(View.VISIBLE);
             changeButtonAnimation.setTarget(layout);
-            changeButtonAnimation.setStartDelay(200);
+            //changeButtonAnimation.setStartDelay(200);
             changeButtonAnimation.start();
             menuFlag = true;
         }
