@@ -19,7 +19,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main">
+    tools:context=".MainActivity">
 
   <fragment
       android:id="@+id/ux_fragment"
@@ -37,7 +37,7 @@
       android:id="@+id/ConstraintLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      tools:layout_editor_absoluteX="0dp"
+      tools:layout_editor_absoluteX="16dp"
       tools:layout_editor_absoluteY="0dp">
 
     <android.support.design.widget.FloatingActionButton
@@ -75,6 +75,7 @@
         app:backgroundTint="@android:color/holo_green_light"
         app:layout_constraintBottom_toTopOf="@+id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent" />
+
   </android.support.constraint.ConstraintLayout>
 
   <android.support.design.widget.FloatingActionButton
@@ -89,4 +90,67 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
 
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/animationButton"
+      android:layout_width="55dp"
+      android:layout_height="55dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="15dp"
+      android:clickable="true"
+      app:layout_constraintBottom_toBottomOf="@+id/ConstraintLayout"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/textView"
+      app:layout_constraintVertical_bias="1.0"
+      app:srcCompat="@android:drawable/ic_media_play" />
+
+  <Button
+      android:id="@+id/button2"
+      android:layout_width="70dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="596dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="8dp"
+      android:text="Hint"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/animationButton"
+      app:layout_constraintHorizontal_bias="0.086"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.898" />
+
+  <TextSwitcher
+      android:id="@+id/textSwitcher"
+      android:layout_width="370dp"
+      android:layout_height="60dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="8dp"
+      android:inAnimation="@android:anim/slide_in_left"
+      android:onClick="next"
+      android:outAnimation="@android:anim/slide_out_right"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/ConstraintLayout"
+      app:layout_constraintVertical_bias="0.253" />
+
+  <TextView
+      android:id="@+id/textView"
+      android:layout_width="0dp"
+      android:layout_height="160dp"
+      android:layout_weight="2.89"
+      android:scrollbars="vertical"
+      android:text=""
+      android:textColor="#ffffff"
+      android:textSize="18sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:layout_editor_absoluteY="0dp" />
+
 </android.support.constraint.ConstraintLayout>
+

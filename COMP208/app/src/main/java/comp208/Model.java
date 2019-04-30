@@ -100,10 +100,8 @@ public class Model extends Node implements Node.OnTapListener {
     public void onUpdate(FrameTime frameTime) {
         if (infoCard == null)
             return;
-
         if (getScene() == null)
             return;
-
         Vector3 cameraPosition = getScene().getCamera().getWorldPosition();
         Vector3 cardPosition = infoCard.getWorldPosition();
         Vector3 direction = Vector3.subtract(cameraPosition, cardPosition);
@@ -123,4 +121,5 @@ public class Model extends Node implements Node.OnTapListener {
             return;
         infoCard.setEnabled(!infoCard.isEnabled());
     }
+
 }

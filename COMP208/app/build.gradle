@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.ar.sceneform.plugin'
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -29,9 +28,10 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.google.ar:core:1.5.0'
-    implementation 'com.google.ar.sceneform:core:1.5.0'
-    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.5.0'
+    implementation 'com.google.ar:core:1.8.0'
+    implementation 'com.google.ar.sceneform:core:1.8.0'
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.8.0'
+    implementation "com.google.ar.sceneform:animation:1.8.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.12'
@@ -40,19 +40,37 @@ dependencies {
 }
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-
-
-sceneform.asset('sampleData/untitled.fbx',
+sceneform.asset('sampleData/b1.fbx',
         'default',
-        'sampleData/untitled.sfa',
-        'src/main/res/raw/untitled')
+        'sampleData/b1.sfa',
+        'src/main/res/raw/b1')
 
-sceneform.asset('sampleData/fixed1.fbx',
+sceneform.asset('sampleData/b2.fbx',
         'default',
-        'sampleData/fixed1.sfa',
-        'src/main/res/raw/fixed1')
+        'sampleData/b2.sfa',
+        'src/main/res/raw/b2')
 
-sceneform.asset('sampleData/test.fbx',
+sceneform.asset('sampleData/b3.fbx',
         'default',
-        'sampleData/test.sfa',
-        'src/main/res/raw/test')
+        'sampleData/b3.sfa',
+        'src/main/res/raw/b3')
+
+sceneform.asset('sampleData/b4.fbx',
+        'default',
+        'sampleData/b4.sfa',
+        'src/main/res/raw/b4')
+
+sceneform.asset('sampleData/b5.fbx',
+        'default',
+        'sampleData/b5.sfa',
+        'src/main/res/raw/b5')
+
+sceneform.asset('sampleData/cold.fbx',
+        'default',
+        'sampleData/cold.sfa',
+        'src/main/res/raw/cold')
+
+sceneform.asset('sampleData/warm.fbx',
+        'default',
+        'sampleData/warm.sfa',
+        'src/main/res/raw/warm')
